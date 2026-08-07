@@ -1,5 +1,5 @@
 # 3D Medical Imaging Nodule Segmentation with Semi-Supervised Learning (LUNA16)
-
+![Qualitative Segmentation Results on Scan 730](Figure_15.png)
 ## Dissertation Project Overview
 
 This repository contains the full source code and analysis pipeline for a Year 3 dissertation project. The project developed a sophisticated semi-supervised deep learning framework for the automated segmentation of pulmonary nodules in standard CT scans. We contrasted two distinct network architectures:
