@@ -1,0 +1,22 @@
+# Python Environment Compatibility: Python 3.10[cite: 13]
+# Deep Learning Framework
+torch==2.1.2+cu121        # PyTorch with CUDA 12.1 acceleration[cite: 13]
+torchvision==0.16.2       # Companion vision library
+torchaudio==2.1.2         # Companion audio library
+
+# Scientific Computing & Data Processing
+numpy==1.26.4             # Fundamental array computation[cite: 13, 15]
+pandas==2.2.1             # CSV and structured data analysis
+scikit-learn==1.4.1.post1 # Essential for metric calculations (e.g., Dice)[cite: 13]
+scikit-image==0.22.0      # Key image processing tools
+
+# Medical Imaging Specifics
+SimpleITK==2.3.1          # Critical for processing .mhd and .nii.gz formats[cite: 12, 13]
+nibabel==5.2.1            # Complementary library for NIfTI access
+
+# Optimization
+tqdm==4.66.2              # Standard progress bar integration
+
+# Visualization (If using accompanying plotting scripts)
+matplotlib==3.8.3         # 2D visualization[cite: 14]
+seaborn==0.13.2           # Enhanced statistical plotting
