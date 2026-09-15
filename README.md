@@ -4,31 +4,31 @@
 
 This repository contains the full source code and analysis pipeline for a Year 3 dissertation project. The project developed a sophisticated semi-supervised deep learning framework for the automated segmentation of pulmonary nodules in standard CT scans. We contrasted two distinct network architectures:
 
-1.  **Fully Supervised Baseline:** A 3D U-Net (LUNA16_UNet) trained exclusively on labeled data[cite: 12, 13].
-2.  **Semi-Supervised Mean Teacher (MT):** An advanced MT framework featuring a Student-Teacher architecture where the Teacher’s parameters represent an Exponential Moving Average (EMA) of the Student’s weights[cite: 13].
+1.  **Fully Supervised Baseline:** A 3D U-Net (LUNA16_UNet) trained exclusively on labeled data.
+2.  **Semi-Supervised Mean Teacher (MT):** An advanced MT framework featuring a Student-Teacher architecture where the Teacher’s parameters represent an Exponential Moving Average (EMA) of the Student’s weights.
 
-**Key Finding:** The Mean Teacher framework successfully incorporated unlabeled volumes, achieving a peak validation Dice Similarity Coefficient (DSC) of $0.6617$ (Epoch 87), demonstrating the powerful data-efficiency benefits of semi-supervised techniques for medical image segmentation tasks[cite: 14].
+**Key Finding:** The Mean Teacher framework successfully incorporated unlabeled volumes, achieving a peak validation Dice Similarity Coefficient (DSC) of $81.77$ (Epoch 87), demonstrating the powerful data-efficiency benefits of semi-supervised techniques for medical image segmentation tasks.
 
 ---
 
 ## Technical Specifications & Environment
 
-*   **Deep Learning Framework:** PyTorch v2.1.2 (with CUDA 12.1 acceleration)[cite: 13]
-*   **Operating System Compatibility:** Linux/Ubuntu (as defined in the dissertation workflow)[cite: 13]
-*   **Medical Imaging Toolkits:** SimpleITK (v2.3.1) and nibabel for advanced handling of `.mhd` and `.nii.gz` file formats[cite: 12, 13]
-*   **Core Metrics (Validation):** Dice Similarity Coefficient (DSC) and combined BCE+Dice loss[cite: 13]
+*   **Deep Learning Framework:** PyTorch v2.1.2 (with CUDA 12.1 acceleration)
+*   **Operating System Compatibility:** Linux/Ubuntu (as defined in the dissertation workflow)
+*   **Medical Imaging Toolkits:** SimpleITK (v2.3.1) and nibabel for advanced handling of `.mhd` and `.nii.gz` file formats
+*   **Core Metrics (Validation):** Dice Similarity Coefficient (DSC) and combined BCE+Dice loss
 
 ---
 
 ## Core Mathematics of the Pipeline
 
 ### Model Metric (Dice Coefficient)
-The evaluation metric used across all experiments to quantify spatial overlap between the target mask ($Y$) and predicted probability map ($\hat{Y}$)[cite: 13]:
+The evaluation metric used across all experiments to quantify spatial overlap between the target mask ($Y$) and predicted probability map ($\hat{Y}$):
 
 $$\text{DSC}(Y, \hat{Y}) = \frac{2 \sum Y \cdot \hat{Y}}{\sum Y + \sum \hat{Y}}$$
 
 ### Multi-Loss Objective Function
-The loss function minimized by the student network is a combined Binary Cross-Entropy (BCE) and Dice Loss[cite: 13]:
+The loss function minimized by the student network is a combined Binary Cross-Entropy (BCE) and Dice Loss:
 
 $$\mathcal{L}_{\text{sup}} = \text{BCE}(y, \hat{y}) + (1 - \text{DSC}(y, \hat{y}))$$
 
@@ -54,7 +54,7 @@ The repository structure matches the final organization defined in the dissertat
 ├── scan_730.nii.gz              # Qualitative visualization: normalized example input CT volume (Scan 730)
 │
 ├── data/                        # Contains essential metadata for dataset reconstruction
-│   ├── annotations.csv          # Metadata: nodule coordinates and series UIDs[cite: 12, 13]
+│   ├── annotations.csv          # Metadata: nodule coordinates and series UIDs
 │   ├── candidates.csv           # Metadata: nodule classification labels
 │   └── sampleSubmission.csv     # Metadata: submission formatting placeholder
 │
@@ -92,8 +92,8 @@ The repository structure matches the final organization defined in the dissertat
 
 You must acquire the primary dataset and preprocess it using the scripts mentioned in the dissertation text.
 
-1.  **Base Dataset:** Download the original LUNA16 grand challenge dataset from its primary archive[cite: 13].
-2.  **Preprocessing:** Use appropriate masking and normalization tools (e.g., SimpleITK) to generate compatible `.npy` or `.nii.gz` training arrays. The required preprocessing steps are defined in the dissertation text (Window HU $[-1200, 600]$, scaled $[0, 1]$)[cite: 15].
+1.  **Base Dataset:** Download the original LUNA16 grand challenge dataset from its primary archive.
+2.  **Preprocessing:** Use appropriate masking and normalization tools (e.g., SimpleITK) to generate compatible `.npy` or `.nii.gz` training arrays. The required preprocessing steps are defined in the dissertation text (Window HU $[-1200, 600]$, scaled $[0, 1]$).
 
 ---
 
@@ -108,7 +108,7 @@ Generate pre-processed crops for centered masks and background validation.
 python export_centered_mask.py  # (Example script name)
 python generate_labels.py         # Generate required training indices
 ```
-*   *Output:* Preprocessed Hounsfield windowed CT volumes ($128 \times 128 \times 128$ crops) and binary masks (0/1)[cite: 12, 13, 15].
+*   *Output:* Preprocessed Hounsfield windowed CT volumes ($128 \times 128 \times 128$ crops) and binary masks (0/1).
 
 ### Step 2: Training the Fully Supervised Baseline (LUNA16_UNet)
 Train the model using *only* labeled data on two GPUs.
@@ -116,15 +116,15 @@ Train the model using *only* labeled data on two GPUs.
 # Configured for standard cross-validation or specific hold-out fold[cite: 13]
 python train.py --config supervised_baseline.yaml --gpus 2
 ```
-*   *Validation Reference:* The quantitative validation DSC history (e.g., the standard baseline performance referenced in Results chart[cite: 14]) is generated during this step.
+*   *Validation Reference:* The quantitative validation DSC history (e.g., the standard baseline performance referenced in Results chart) is generated during this step.
 
 ### Step 3: Training the Semi-Supervised Mean Teacher Model
-Train using a mixed-batch (labeled+unlabeled data) and consistency ramp-up (epochs 0-20)[cite: 13].
+Train using a mixed-batch (labeled+unlabeled data) and consistency ramp-up (epochs 0-20.
 ```bash
-# Example setup: batch_size=2 labeled + 2 unlabeled samples per GPU[cite: 13]
+# Example setup: batch_size=2 labeled + 2 unlabeled samples per GPU
 python train.py --config mean_teacher_semisup.yaml --gpus 2 --resume checkpoints/pretrain.pt
 ```
-*   *Best Model (Ref Dissertation):* The network achieves peak quantitative performance (DSC $0.6617$) around Epoch 87[cite: 14].
+*   *Best Model (Ref Dissertation):* The network achieves peak quantitative performance (DSC $81.77$) around Epoch 87.
 
 ### Step 4: Verification and Model Persistence
 ```bash
@@ -143,24 +143,22 @@ Load the provided NIfTI volumes into a standard 3D viewer (e.g., ITK-SNAP or 3D 
 
 | Layer Type | File Name | Context |
 | :--- | :--- | :--- |
-| **Main Image** | `scan_730.nii.gz` | Input: normalized Hounsfield window crop[cite: 15] |
-| **Ground Truth Mask (Overlay 1)**| `mask_730.nii.gz` | The intended perfect segmentation target (binary 1/0)[cite: 12, 13] |
-| **Baseline Prediction (Overlay 2)**| `baseline_pred_730.nii.gz`| 3D prediction map showing final supervised network output[cite: 13, 14] |
-| **Mean Teacher Pred (Overlay 3)**| `mt_pred_730.nii.gz`| 3D prediction map showing final output of proposed semi-supervised model (v8)[cite: 13, 14] |
+| **Main Image** | `scan_730.nii.gz` | Input: normalized Hounsfield window crop |
+| **Ground Truth Mask (Overlay 1)**| `mask_730.nii.gz` | The intended perfect segmentation target (binary 1/0)|
+| **Baseline Prediction (Overlay 2)**| `baseline_pred_730.nii.gz`| 3D prediction map showing final supervised network output |
+| **Mean Teacher Pred (Overlay 3)**| `mt_pred_730.nii.gz`| 3D prediction map showing final output of proposed semi-supervised model (v8)|
 
 ### Synthesis and Interpretation
 By overlaying all three result volumes simultaneously, you can directly evaluate performance:
 
 1.  **Mean Teacher vs. Ground Truth:** Observe how `mt_pred_730.nii.gz` adheres closely to the structure of `mask_730.nii.gz`, demonstrating high spatial overlap.
 2.  **Mean Teacher vs. Baseline:** By toggling visible layers between `mt_pred_730.nii.gz` and `baseline_pred_730.nii.gz`, you can identify where the supervised baseline failed or generated false positives.
-3.  **Core Contribution:** This visual result demonstrates the qualitative advantage provided by the semi-supervised framework, leveraging information from the unlabeled volumes[cite: 13, 14].
+3.  **Core Contribution:** This visual result demonstrates the qualitative advantage provided by the semi-supervised framework, leveraging information from the unlabeled volumes.
 
 ---
 
 ## Dissertation Project Citation
 
-If using this implementation as part of subsequent research or in a technical review, please cite the original dissertation document:
-
-> **[cite: YOUR_NAME], (2024).** *Investigating Semi-Supervised Learning (Mean Teacher) for 3D Pulmonary Nodule Segmentation.* Year 3 Dissertation Project, Loughborough University.
+> **[cite:SEAN CHRISTOPHER BISCOE], (2024).** *Investigating Semi-Supervised Learning (Mean Teacher) for 3D Pulmonary Nodule Segmentation.* Year 3 Dissertation Project, Loughborough University.
 
 ---
