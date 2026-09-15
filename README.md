@@ -7,7 +7,7 @@ This repository contains the full source code and analysis pipeline for a Year 3
 1.  **Fully Supervised Baseline:** A 3D U-Net (LUNA16_UNet) trained exclusively on labeled data.
 2.  **Semi-Supervised Mean Teacher (MT):** An advanced MT framework featuring a Student-Teacher architecture where the Teacher’s parameters represent an Exponential Moving Average (EMA) of the Student’s weights.
 
-**Key Finding:** The Mean Teacher framework successfully incorporated unlabeled volumes, achieving a peak validation Dice Similarity Coefficient (DSC) of $81.77$ (Epoch 87), demonstrating the powerful data-efficiency benefits of semi-supervised techniques for medical image segmentation tasks.
+**Key Finding:** The Mean Teacher framework successfully incorporated unlabeled volumes, achieving a peak validation Dice Similarity Coefficient (DSC) of $81.77%$ (Epoch 87), demonstrating the powerful data-efficiency benefits of semi-supervised techniques for medical image segmentation tasks.
 
 ---
 
@@ -124,7 +124,7 @@ Train using a mixed-batch (labeled+unlabeled data) and consistency ramp-up (epoc
 # Example setup: batch_size=2 labeled + 2 unlabeled samples per GPU
 python train.py --config mean_teacher_semisup.yaml --gpus 2 --resume checkpoints/pretrain.pt
 ```
-*   *Best Model (Ref Dissertation):* The network achieves peak quantitative performance (DSC $81.77$) around Epoch 87.
+*   *Best Model (Ref Dissertation):* The network achieves peak quantitative performance (DSC $81.77%$) around Epoch 87.
 
 ### Step 4: Verification and Model Persistence
 ```bash
